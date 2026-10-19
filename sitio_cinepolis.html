@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinépolis - Cartelera Oficial y Club Cinépolis</title>
+  <style>
+    /* VARIABLES Y ESTILOS BASE DE CINÉPOLIS */
+    :root {
+      --azul-cinepolis: #0b2341;
+      --amarillo-cinepolis: #ffcc00;
+      --azul-claro: #173f70;
+      --gris-fondo: #f4f6f9;
+      --texto-oscuro: #1e293b;
+      --blanco: #ffffff;
+      --borde-radio: 12px;
+      --sombra: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth; /* Desplazamiento suave para los anclajes */
+    }
+
+    body {
+      background-color: var(--gris-fondo);
+      color: var(--texto-oscuro);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* ENCABEZADO Y BARRA DE NAVEGACIÓN */
+    header {
+      background-color: var(--azul-cinepolis);
+      color: var(--blanco);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .brand-logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--blanco);
+    }
+
+    .brand-logo span {
+      color: var(--amarillo-cinepolis);
+    }
+
+    .main-nav ul {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .main-nav a {
+      color: var(--blanco);
+      font-weight: 600;
+      padding: 0.5rem 0.8rem;
+      border-radius: 6px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .main-nav a:hover {
+      background-color: var(--azul-claro);
+      color: var(--amarillo-cinepolis);
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, background-color 0.2s;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-club {
+      background-color: var(--amarillo-cinepolis);
+      color: var(--azul-cinepolis);
+    }
+
+    .btn-login {
+      background-color: transparent;
+      color: var(--blanco);
+      border: 1px solid var(--blanco);
+    }
+
+    /* HERO BANNER PRINCIPAL */
+    .hero-banner {
+      background: linear-gradient(rgba(11, 35, 65, 0.85), rgba(11, 35, 65, 0.92)), 
+                  url('https://static.cinemex.com/static_cache/images/cines/170912165538.jpg') center/cover;
+      color: var(--blanco);
+      padding: 4.5rem 5%;
+      text-align: center;
+    }
+
+    .hero-banner h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-banner p {
+      font-size: 1.2rem;
+      color: #e2e8f0;
+      margin-bottom: 1.8rem;
+    }
+
+    /* SECCIONES Y CONTENEDORES */
+    section {
+      padding: 3.5rem 5%;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      color: var(--azul-cinepolis);
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background-color: var(--amarillo-cinepolis);
+      border-radius: 2px;
+    }
+
+    /* TARJETAS DE PELÍCULAS DE LA CARTELERA OFICIAL */
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+
+    .movie-card {
+      background-color: var(--blanco);
+      border-radius: var(--borde-radio);
+      overflow: hidden;
+      box-shadow: var(--sombra);
+      transition: transform 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .movie-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .movie-poster {
+      width: 100%;
+      height: 330px;
+      object-fit: cover;
+    }
+
+    .movie-info {
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .movie-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 0.4rem;
+      color: var(--azul-cinepolis);
+    }
+
+    .movie-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      background-color: #e2e8f0;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      width: fit-content;
+      color: var(--azul-claro);
+    }
+
+    .movie-info .btn-buy {
+      margin-top: auto;
+      background-color: var(--azul-cinepolis);
+      color: var(--blanco);
+      width: 100%;
+    }
+
+    /* SECCIÓN CLUB CINÉPOLIS Y FORMULARIO DE ACCESO */
+    .club-container {
+      background-color: var(--blanco);
+      border-radius: var(--borde-radio);
+      box-shadow: var(--sombra);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .club-card-preview {
+      background: linear-gradient(135deg, #0b2341 0%, #173f70 100%);
+      color: var(--blanco);
+      border-radius: 16px;
+      padding: 2.2rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+      border: 2px solid var(--amarillo-cinepolis);
+    }
+
+    .club-card-preview h3 {
+      color: var(--amarillo-cinepolis);
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .tab-btn {
+      padding: 0.6rem 1rem;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    .tab-btn.active {
+      color: var(--azul-cinepolis);
+      border-bottom: 3px solid var(--amarillo-cinepolis);
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: var(--azul-cinepolis);
+      color: var(--blanco);
+      padding: 2.5rem 5% 1.5rem 5%;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .footer-col h4 {
+      color: var(--amarillo-cinepolis);
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-col a {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+    }
+
+    .footer-col a:hover {
+      color: var(--blanco);
+    }
+
+    .footer-bottom {
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--amarillo-cinepolis);
+      letter-spacing: 0.5px;
+    }
+
+    /* ADAPTACIÓN MÓVIL */
+    @media (max-width: 768px) {
+      .top-bar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .club-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ENCABEZADO Y BARRA DE NAVEGACIÓN -->
+  <header>
+    <div class="top-bar">
+      <!-- Logo con anclaje al inicio -->
+      <a href="#inicio" class="brand-logo" title="Cinépolis Inicio">
+        Cinépolis<span>.</span>
+      </a>
+
+      <!-- Navegación con hipervínculos de anclaje -->
+      <nav class="main-nav" aria-label="Navegación principal">
+        <ul>
+          <li><a href="#cartelera">Cartelera</a></li>
+          <li><a href="#estrenos">Próximos Estrenos</a></li>
+          <li><a href="#club-cinepolis">Club Cinépolis</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <!-- Botones de Acción para Club Cinépolis -->
+      <div class="auth-buttons">
+        <a href="#club-cinepolis" class="btn btn-login">Ingresar</a>
+        <a href="#club-cinepolis" class="btn btn-club">Unirse al Club</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CUERPO PRINCIPAL -->
+  <main id="inicio">
+
+    <!-- HERO BANNER DE BIENVENIDA -->
+    <section class="hero-banner">
+      <h1>La Magia del Cine en Cinépolis</h1>
+      <p>Disfruta los grandes estrenos con los mejores beneficios de tu Club Cinépolis.</p>
+      <a href="#cartelera" class="btn btn-club">Ver Cartelera</a>
+    </section>
+
+    <!-- SECCIÓN 1: EN CARTELERA (ANCLAJE: #cartelera) -->
+    <section id="cartelera">
+      <h2 class="section-title">Películas en Cartelera</h2>
+      
+      <div class="movies-grid">
+
+        <!-- Película 1: Street Fighter -->
+        <article class="movie-card">
+          <img src="street_fighter.jpg" alt="Street Fighter" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">Street Fighter</h3>
+            <span class="movie-badge">4DX / IMAX / DOB</span>
+            <button class="btn btn-buy" onclick="alert('Inicia sesión con tu Tarjeta Club Cinépolis para comprar boletos.')">Comprar Boletos</button>
+          </div>
+        </article>
+
+        <!-- Película 2: La Caída de la Ballena -->
+        <article class="movie-card">
+          <img src="ballena.jpg" alt="La Caída de la Ballena" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">La Caída de la Ballena (Whalefall)</h3>
+            <span class="movie-badge">2D / SUB / B15</span>
+            <button class="btn btn-buy" onclick="alert('Inicia sesión con tu Tarjeta Club Cinépolis para comprar boletos.')">Comprar Boletos</button>
+          </div>
+        </article>
+
+        <!-- Película 3: El Cadáver de la Novia -->
+        <article class="movie-card">
+          <img src="https://m.media-amazon.com/images/M/MV5BMTk1MTY1NjU4MF5BMl5BanBnXkFtZTcwNjIzMTEzMw@@._V1_FMjpg_UX1000_.jpg" alt="El Cadáver de la Novia" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">El Cadáver de la Novia (Reestreno)</h3>
+            <span class="movie-badge">MacroXE / DOB / A</span>
+            <button class="btn btn-buy" onclick="alert('Inicia sesión con tu Tarjeta Club Cinépolis para comprar boletos.')">Comprar Boletos</button>
+          </div>
+        </article>
+
+        <!-- Película 4: Sacrificio: Los Elegidos -->
+        <article class="movie-card">
+          <img src="sacrificio.jpg" alt="Sacrificio: Los Elegidos" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">Sacrificio: Los Elegidos (Sacrifice)</h3>
+            <span class="movie-badge">2D / SUB / C</span>
+            <button class="btn btn-buy" onclick="alert('Inicia sesión con tu Tarjeta Club Cinépolis para comprar boletos.')">Comprar Boletos</button>
+          </div>
+        </article>
+
+        <!-- Película 5: Súper Canino -->
+        <article class="movie-card">
+          <img src="super_canino.jpg" alt="Súper Canino" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">Súper Canino (Charlie the Wonderdog)</h3>
+            <span class="movie-badge">2D / DOB / AA</span>
+            <button class="btn btn-buy" onclick="alert('Inicia sesión con tu Tarjeta Club Cinépolis para comprar boletos.')">Comprar Boletos</button>
+          </div>
+        </article>
+
+        <!-- Película 6: La Isla de las Muñecas -->
+        <article class="movie-card">
+          <img src="isla.jpg" alt="La Isla de las Muñecas" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">La Isla de las Muñecas</h3>
+            <span class="movie-badge">2D / ESP / B15</span>
+            <button class="btn btn-buy" onclick="alert('Inicia sesión con tu Tarjeta Club Cinépolis para comprar boletos.')">Comprar Boletos</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: PRÓXIMOS ESTRENOS (ANCLAJE: #estrenos) -->
+    <section id="estrenos">
+      <h2 class="section-title">Próximos Estrenos</h2>
+
+      <div class="movies-grid">
+
+        <!-- Próximo Estreno 1: La Venganza del Charro Negro -->
+        <article class="movie-card">
+          <img src="charro_negro.jpg" alt="La Venganza del Charro Negro" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">La Venganza del Charro Negro</h3>
+            <span class="movie-badge">Estreno: 22 de Octubre</span>
+            <button class="btn btn-buy" style="background-color: #64748b;" disabled>Próximamente</button>
+          </div>
+        </article>
+
+        <!-- Próximo Estreno 2: Klara y el Sol -->
+        <article class="movie-card">
+          <img src="klara.jpg" alt="Klara y el Sol" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">Klara y el Sol (Klara and the Sun)</h3>
+            <span class="movie-badge">Estreno: 22 de Octubre</span>
+            <button class="btn btn-buy" style="background-color: #64748b;" disabled>Próximamente</button>
+          </div>
+        </article>
+
+        <!-- Próximo Estreno 3: El Poder de la Red -->
+        <article class="movie-card">
+          <img src="red.jpg" alt="El Poder de la Red" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">El Poder de la Red (The Social Reckoning)</h3>
+            <span class="movie-badge">Estreno: 22 de Octubre</span>
+            <button class="btn btn-buy" style="background-color: #64748b;" disabled>Próximamente</button>
+          </div>
+        </article>
+
+        <!-- Próximo Estreno 4: Kraken: Terror en lo Profundo -->
+        <article class="movie-card">
+          <img src="kraken.jpg" alt="Kraken: Terror en lo Profundo" class="movie-poster" loading="lazy">
+          <div class="movie-info">
+            <h3 class="movie-title">Kraken: Terror en lo Profundo</h3>
+            <span class="movie-badge">Estreno: 22 de Octubre</span>
+            <button class="btn btn-buy" style="background-color: #64748b;" disabled>Próximamente</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: ACCESO CON TARJETA / REGISTRO CLUB CINÉPOLIS (ANCLAJE: #club-cinepolis) -->
+    <section id="club-cinepolis">
+      <h2 class="section-title">Club Cinépolis</h2>
+
+      <div class="club-container">
+        <!-- Visualización Digital de la Tarjeta Club Cinépolis -->
+        <div class="club-card-preview">
+          <h3>Tarjeta Club Cinépolis</h3>
+          <p style="margin-bottom: 2rem; color: #e2e8f0;">Ingresa tu número de tarjeta para consultar tus puntos acumulados, acceder a promociones 2x1 y comprar boletos.</p>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+              <small style="display: block; opacity: 0.8; font-size: 0.75rem;">NÚMERO DE TARJETA</small>
+              <strong id="display-card-number" style="letter-spacing: 2px; font-size: 1.1rem;">**** **** **** ****</strong>
+            </div>
+            <span style="font-weight: bold; color: var(--amarillo-cinepolis); font-size: 0.9rem;">FANÁTICO</span>
+          </div>
+        </div>
+
+        <!-- Formulario de Acceso y Registro -->
+        <div>
+          <div class="tabs">
+            <button type="button" class="tab-btn active" id="tab-login-btn" onclick="switchTab('login')">Ingresar con Tarjeta</button>
+            <button type="button" class="tab-btn" id="tab-register-btn" onclick="switchTab('register')">Registrarme</button>
+          </div>
+
+          <!-- Formulario de Acceso por Tarjeta Club Cinépolis -->
+          <form id="form-login" onsubmit="event.preventDefault(); alert('¡Bienvenido a Club Cinépolis!');">
+            <div class="form-group">
+              <label for="login-card">Número de Tarjeta Club Cinépolis (16 dígitos)</label>
+              <input type="text" id="login-card" name="card_number" placeholder="Ej. 4123 5678 9101 1121" required maxlength="16" pattern="[0-9]{16}">
+            </div>
+            <div class="form-group">
+              <label for="login-password">Contraseña</label>
+              <input type="password" id="login-password" name="password" placeholder="Tu contraseña" required>
+            </div>
+            <button type="submit" class="btn btn-club" style="width: 100%;">Ingresar a mi Cuenta</button>
+          </form>
+
+          <!-- Formulario de Registro de Usuario -->
+          <form id="form-register" style="display: none;" onsubmit="event.preventDefault(); alert('¡Registro completado exitosamente! Tu nueva tarjeta digital ha sido vinculada.');">
+            <div class="form-group">
+              <label for="reg-name">Nombre Completo</label>
+              <input type="text" id="reg-name" name="fullname" placeholder="Nombre y Apellidos" required>
+            </div>
+            <div class="form-group">
+              <label for="reg-email">Correo Electrónico</label>
+              <input type="email" id="reg-email" name="email" placeholder="correo@ejemplo.com" required>
+            </div>
+            <div class="form-group">
+              <label for="reg-password">Contraseña</label>
+              <input type="password" id="reg-password" name="password" placeholder="Mínimo 8 caracteres" required minlength="8">
+            </div>
+            <button type="submit" class="btn btn-club" style="width: 100%;">Crear Cuenta y Obtener Tarjeta</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER / PIE DE PÁGINA (ANCLAJE: #contacto) -->
+  <footer id="contacto">
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Cinépolis</h4>
+        <ul>
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#cartelera">Cartelera</a></li>
+          <li><a href="#estrenos">Próximos Estrenos</a></li>
+          <li><a href="#club-cinepolis">Club Cinépolis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Salas y Formatos</h4>
+        <ul>
+          <li><a href="#cartelera">Cinépolis VIP</a></li>
+          <li><a href="#cartelera">IMAX</a></li>
+          <li><a href="#cartelera">4DX</a></li>
+          <li><a href="#cartelera">MacroXE</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Atención al Cliente</h4>
+        <ul>
+          <li><a href="tel:+528001234567">Línea directa: 800 123 4567</a></li>
+          <li><a href="mailto:contacto@cinepolis.com">contacto@cinepolis.com</a></li>
+          <li><a href="#contacto">Términos y Condiciones</a></li>
+          <li><a href="#contacto">Aviso de Privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PIE DE PÁGINA CON TU NOMBRE ÚNICAMENTE HASTA ABAJO -->
+    <div class="footer-bottom">
+      <p>Vazquez Hernandez Eliana Karime 0908 5-J</p>
+    </div>
+  </footer>
+
+  <!-- LÓGICA DE INTERACTIVIDAD CON JAVASCRIPT -->
+  <script>
+    // Alterna entre la pestaña de ingreso por tarjeta y registro
+    function switchTab(tab) {
+      const loginForm = document.getElementById('form-login');
+      const registerForm = document.getElementById('form-register');
+      const loginBtn = document.getElementById('tab-login-btn');
+      const registerBtn = document.getElementById('tab-register-btn');
+
+      if (tab === 'login') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        loginBtn.classList.add('active');
+        registerBtn.classList.remove('active');
+      } else {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        loginBtn.classList.remove('active');
+        registerBtn.classList.add('active');
+      }
+    }
+
+    // Actualiza dinámicamente la vista previa de la tarjeta mientras se teclea
+    document.getElementById('login-card').addEventListener('input', function(e) {
+      const display = document.getElementById('display-card-number');
+      const val = e.target.value;
+      if (val.length === 0) {
+        display.textContent = '**** **** **** ****';
+      } else {
+        display.textContent = val.padEnd(16, '*').replace(/(.{4})/g, '$1 ').trim();
+      }
+    });
+  </script>
+
+</body>
+</html>
